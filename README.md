@@ -1,2 +1,2 @@
-# simple-bash-utils
-Implementation of several bash utilities
+# Simple Bash Utils
+Development of Bash utilities: cat, grep.
