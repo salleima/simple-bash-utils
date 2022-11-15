@@ -25,5 +25,6 @@ typedef struct {
 void cat(char *src, int file_size, options *options);
 void get_options(int argc, char **agrv, options *options);
 void numbering(char *str, int *line, int bufsize);
+void show_non_printing(int ch, options *options);
 
-#endif  // CAT_H
+#endif // CAT_H

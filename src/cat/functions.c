@@ -43,6 +43,40 @@ void get_options(int argc, char **argv, options *options) {
   }
 }
 
+void show_non_printing(int ch, options *options) {
+  if (ch == '\n') {
+      if (options->e)
+        fprintf(stdout, "$\n");
+      else
+        fprintf(stdout, "%c", ch);
+    } else if (ch == '\t') {
+      if (options->t)
+        fprintf(stdout, "^I");
+      else
+        fprintf(stdout, "%c", ch);
+    } else if (options->v) {
+      if (ch >= 32) {
+        if (ch == 127) {
+          fprintf(stdout, "^?");
+        } else if (ch < 127) {
+          fprintf(stdout, "%c", ch);
+        } else if (ch < 128 + 127) {
+          if (ch < 128 + 32) {
+            fprintf(stdout, "M-^%c", ch - 128 + 64);
+          } else {
+            fprintf(stdout, "M-%c", ch - 128);
+          }
+        } else {
+          fprintf(stdout, "M-^?");
+        }
+      } else {
+        fprintf(stdout, "^%c", ch + 64);
+      }
+    } else {
+      fprintf(stdout, "%c", ch);
+    }
+}
+
 void cat(char *src, int file_size, options *options) {
   int ch, prev;
   char *ptr = src;
@@ -74,38 +108,8 @@ void cat(char *src, int file_size, options *options) {
       }
     }
 
-    if (ch == '\n') {
-      if (options->e)
-        fprintf(stdout, "$\n");
-      else
-        fprintf(stdout, "%c", ch);
-    } else if (ch == '\t') {
-      if (options->t)
-        fprintf(stdout, "^I");
-      else
-        fprintf(stdout, "%c", ch);
-    } else if (options->v) {
-      if (ch >= 32) {
-        if (ch == 127) {
-          fprintf(stdout, "^?");
-        } else if (ch < 127) {
-          fprintf(stdout, "%c", ch);
-        } else if (ch < 128 + 127) {
-          if (ch < 128 + 32) {
-            fprintf(stdout, "M-^%c", ch - 128 + 64);
-          } else {
-            fprintf(stdout, "M-%c", ch - 128);
-          }
-        } else {
-          fprintf(stdout, "M-^?");
-        }
-      } else {
-        fprintf(stdout, "^%c", ch + 64);
-      }
-    } else {
-      fprintf(stdout, "%c", ch);
-    }
-
+    show_non_printing(ch, options);
+    
     prev = ch;
   }
 }
