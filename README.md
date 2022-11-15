@@ -10,5 +10,7 @@ The project includes the development of Bash text utilities cat & grep in C prog
     - HTTPS `https://github.com/salleima/simple-bash-utils.git`
 2. Working with cat:
     - Run `make cat` to build programm
+    - Run `sh test_cat.sh` to run tests
 3. Working with grep:
     - Run `make grep` to build programm
+    - Run `sh test_grep.sh` to run tests
